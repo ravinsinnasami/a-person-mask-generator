@@ -188,10 +188,10 @@ class APersonMaskGenerator:
             mask_arrays.append(mask_background_array)
         else:
             for i, mask in enumerate(masks):
-                condition = (
-                        np.stack((mask.numpy_view().squeeze(),) * image_shape[-1], axis=-1)
-                        > confidence
-                )
+                condition = np.repeat(
+                        mask.numpy_view(), image_shape[-1], axis=2
+                ) > confidence
+                
                 mask_array = np.where(
                     condition, mask_foreground_array, mask_background_array
                 )
